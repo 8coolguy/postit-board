@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source inline("top-{0..100000..1}");
+@source inline("left-{0..100000..1}");
 
 :root {
   --background: #ffffff;
