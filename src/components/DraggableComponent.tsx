@@ -4,9 +4,8 @@ export default function DraggableComponent({children}){
     const [state, setState] = useState(true);
 
     return (
-        <div onClick={(event)=>{setState(!state); console.log("click",event);}}>
+        <div className="w-full h-full bg-amber-400" onClick={(event)=>{setState(!state); console.log("click",event);}}>
             {children}
         </div>
     )
-
 }
