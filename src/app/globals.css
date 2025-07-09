@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @source inline("top-{0..100000..1}");
 @source inline("left-{0..100000..1}");
+/* @source inline("background-size:{10..50..1}px_{10..50..1}px") */
 
 :root {
   --background: #ffffff;

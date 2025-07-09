@@ -1,4 +1,5 @@
-import DraggableComponent from "./../../DraggableComponent.tsx";
+import Canvas from "@components/CanvasComponent.tsx";
+
 export async function generateStaticParams() {
     const users = [{username:"c", title:"1"},{username:"b",title:"2"},{username:"a",title:"3"}];
     return users.map((user)=>({slug:user.title}));
@@ -16,10 +17,11 @@ export default async function Home({params}){
         );
     return (
         <div>
-            <DraggableComponent>
+            <Canvas>
                 <p>This is the component.</p>
-            </DraggableComponent>
+            </Canvas>
             {elements}
         </div>
     )
 } 
+
