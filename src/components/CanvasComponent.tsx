@@ -32,6 +32,7 @@ const Canvas: FC <Props> = ({children}) => {
     //TODO:
     //pointer events that I have to handle
     //handle pointer down, pointer move, pointer up, wheel scroll events
+
     function handlePointerDown(event: PointerEvent){
         setDragState(true);
     }
@@ -50,11 +51,16 @@ const Canvas: FC <Props> = ({children}) => {
         else if(event.deltaY < 0){
             setZoom(Math.min(zoom - event.deltaY*wheelSens, lowerLimit));
         }
+        console.log("Zoom Change");
     }
 
     useEffect(() => {
-        
-    }, [zoom])
+        if(dragState){
+            document.body.style.cursor = "grabbing";
+        }else if(!dragState){
+            document.body.style.cursor = "default";
+        }
+    }, [dragState])
      
     return (
         <div
