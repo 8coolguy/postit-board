@@ -7,9 +7,8 @@ interface Props {
 }
 const Dots = ({zoom}:{zoom:number}) => {
     const pixelSize = Math.round(-.16 * zoom + 58);
-    console.log(pixelSize)
     return (
-        <div style={{backgroundSize: `${pixelSize}px ${pixelSize}px`}}className={`absolute inset-0 h-full w-full bg-[radial-gradient(#776780_1.5px,transparent_1px)] opacity-40 [background-size:$${pixelSize}px_${pixelSize}px]`}></div>
+        <div style={{backgroundSize: `${pixelSize}px ${pixelSize}px`}} className={`absolute inset-0 h-full w-full bg-[radial-gradient(#776780_1.5px,transparent_1px)] opacity-40 [background-size:$${pixelSize}px_${pixelSize}px]`}></div>
     );
 }
 
@@ -17,14 +16,14 @@ const Canvas: FC <Props> = ({children}) => {
     const canvasHeight = 3000;
     const canvasWidth = 3000;
 
-    const centerH = 1500;
-    const centerW = 1500;
+    const centerY = 0;
+    const centerX = 0;
     const upperLimit = 50;
     const lowerLimit = 300;
-
+    const [center, setCenter] = useState<Point>({x:centerX,y:centerY});
     const [offSet,setOffset] = useState<Point>({
-        x:-centerW,
-        y:-centerH,
+        x:0,
+        y:0,
     }); 
     const [zoom, setZoom] = useState(100);
     const wheelSens = .05;
@@ -35,13 +34,20 @@ const Canvas: FC <Props> = ({children}) => {
 
     function handlePointerDown(event: PointerEvent){
         setDragState(true);
+        setOffset({x:event.clientX,y:event.clientY});
     }
+
     function handlePointerUp(event: PointerEvent){
         setDragState(false);
+        console.log("center",center);
     }
     function handlePointerMove(event: PointerEvent){
         if(dragState){
-            console.log(event);
+            const delta = {x:offSet.x - event.clientX, y: offSet.y - event.clientY};
+            //handle case where center moves off the can
+            if(canvasWidth < Math.abs(center.x + delta.x) || canvasHeight < Math.abs(center.y + delta.y))
+                return;
+            setCenter({x:center.x + delta.x, y:center.y + delta.y});
         }
     }
     function handleWheel(event:MouseEvent){
@@ -51,8 +57,10 @@ const Canvas: FC <Props> = ({children}) => {
         else if(event.deltaY < 0){
             setZoom(Math.min(zoom - event.deltaY*wheelSens, lowerLimit));
         }
-        console.log("Zoom Change");
     }
+
+    useEffect(() => {
+    }, [center])
 
     useEffect(() => {
         if(dragState){
@@ -61,6 +69,10 @@ const Canvas: FC <Props> = ({children}) => {
             document.body.style.cursor = "default";
         }
     }, [dragState])
+
+    useEffect(() => {
+        console.log("Offset", offSet);
+    }, [offSet])
      
     return (
         <div
