@@ -5,12 +5,15 @@ import {type Point} from "framer-motion"
 interface Props {
   children: React.ReactNode;
 }
-const Dots = ({zoom}:{zoom:number}) => {
+const Dots = ({position,zoom}:{position:Point,zoom:number}) => {
     const pixelSize = Math.round(-.16 * zoom + 58);
     return (
-        <div style={{backgroundSize: `${pixelSize}px ${pixelSize}px`}} className={`absolute inset-0 h-full w-full bg-[radial-gradient(#776780_1.5px,transparent_1px)] opacity-40 [background-size:$${pixelSize}px_${pixelSize}px]`}></div>
+        <div style={{backgroundSize: `${pixelSize}px ${pixelSize}px`, backgroundPosition: `${-position.x*.07}px ${-position.y*.07}px`}} className={`absolute inset-0 h-full w-full bg-[radial-gradient(#776780_1.5px,transparent_1px)] opacity-100 [background-size:$${pixelSize}px_${pixelSize}px]`}></div>
     );
 }
+const Filter = () => (
+  <div className="pointer-events-none absolute inset-0 hidden h-full w-full bg-noise opacity-100 brightness-[105%] contrast-[170%] filter sm:inline" />
+);
 
 const Canvas: FC <Props> = ({children}) => {
     const canvasHeight = 3000;
@@ -81,7 +84,8 @@ const Canvas: FC <Props> = ({children}) => {
         onPointerMove={handlePointerMove}
         onWheel={handleWheel}
         >
-            <Dots zoom={zoom}/>
+            <Dots position={center} zoom={zoom}/>
+            <Filter/>
         </div>
     )
 
