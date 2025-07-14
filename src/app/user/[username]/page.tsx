@@ -1,11 +1,7 @@
+'use client'
 import Canvas from "@components/CanvasComponent.tsx";
 
-export async function generateStaticParams() {
-    const users = [{username:"c", title:"1"},{username:"b",title:"2"},{username:"a",title:"3"}];
-    return users.map((user)=>({slug:user.title}));
-}
-export default async function Home({params}){
-    const { username } = await params;
+export default function Home({params}){
     const settings = {};
     const posts = [{id:0,x:1000, y:0, title:"first post",type:"image", title:"",content:"Hello this is the the content of this posit note",author:"arnav", size:10},];
 
@@ -15,12 +11,18 @@ export default async function Home({params}){
                 <p className="text-bold">{element.content}</p>
             </div>)
         );
+    function handleClick(event){
+        event.stopPropagation();
+        console.log("button",event);
+    }
     return (
         <div>
             <Canvas>
-                <p>This is the component.</p>
+                <p>this isflskdfjs</p>
             </Canvas>
-            {elements}
+            <div className="z-2 absolute">
+                <button onClick={handleClick} className="z-50">Click Me</button>
+            </div>
         </div>
     )
 } 

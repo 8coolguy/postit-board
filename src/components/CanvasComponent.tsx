@@ -79,6 +79,7 @@ const Canvas: FC <Props> = ({children}) => {
      
     return (
         <div
+        className="z-1"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerMove={handlePointerMove}
