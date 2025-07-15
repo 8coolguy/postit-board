@@ -1,5 +1,6 @@
 'use client'
 import Canvas from "@components/CanvasComponent.tsx";
+import DraggableComponent from "@components/DraggableComponent.tsx";
 
 export default function Home({params}){
     const settings = {};
@@ -12,16 +13,19 @@ export default function Home({params}){
             </div>)
         );
     function handleClick(event){
+        console.log("Hello World")
         event.stopPropagation();
-        console.log("button",event);
+        //add an event
     }
     return (
         <div>
             <Canvas>
-                <p>this isflskdfjs</p>
+                <DraggableComponent>
+                    <p> here is some text </p>
+                </DraggableComponent>
             </Canvas>
-            <div className="z-2 absolute">
-                <button onClick={handleClick} className="z-50">Click Me</button>
+            <div className="z-3 absolute top-[100px] left-[100px]">
+                <button onClick={handleClick}>Click Me</button>
             </div>
         </div>
     )

@@ -79,12 +79,13 @@ const Canvas: FC <Props> = ({children}) => {
      
     return (
         <div
-        className="z-1"
+        className="z-0"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerMove={handlePointerMove}
         onWheel={handleWheel}
         >
+            {children}
             <Dots position={center} zoom={zoom}/>
             <Filter/>
         </div>

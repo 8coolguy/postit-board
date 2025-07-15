@@ -1,11 +1,40 @@
 'use client';
-import { useState } from "react";
-export default function DraggableComponent({children}){
-    const [state, setState] = useState(true);
+import { useState, type FC} from "react";
+import {type Point} from "framer-motion";
+
+const DraggableComponent: FC<Props> = ({children}) =>{
+    const [dragState, setDragState] = useState(false);
+    const [position, setPosition] = useState<Point>({x:100,y:0});
+
+    function handlePointerDown(event){
+        event.stopPropagation();
+        setDragState(true);
+        console.log(event);
+    }
+    function handlePointerUp(event){
+        if(dragState){
+            event.stopPropagation();
+            setDragState(false);
+        }
+    }
+    function handlePointerMove(event){
+        if(dragState){
+            event.stopPropagation();
+            setPosition({x:event.clientX, y:event.clientY});
+            console.log(event);
+        }
+    }
 
     return (
-        <div className="w-full h-full bg-amber-400" onClick={(event)=>{setState(!state); console.log("click",event);}}>
+        <div 
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerMove={handlePointerMove}
+        style={{top:`${position.y}px`, left:`${position.x}px`}}
+        className="absolute z-1">
             {children}
         </div>
     )
 }
+
+export default DraggableComponent;
