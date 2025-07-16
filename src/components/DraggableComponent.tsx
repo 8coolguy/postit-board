@@ -30,7 +30,7 @@ const DraggableComponent: FC<Props> = ({children}) =>{
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerMove={handlePointerMove}
-        style={{top:`${position.y}px`, left:`${position.x}px`}}
+        style={{top:`${position.y}px`, left:`${position.x}px`, transform: "translate(-50%, -50%)"}}
         className="absolute z-1">
             {children}
         </div>

@@ -66,11 +66,6 @@ const Canvas: FC <Props> = ({children}) => {
     }, [center])
 
     useEffect(() => {
-        if(dragState){
-            document.body.style.cursor = "grabbing";
-        }else if(!dragState){
-            document.body.style.cursor = "default";
-        }
     }, [dragState])
 
     useEffect(() => {
