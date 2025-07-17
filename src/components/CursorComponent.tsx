@@ -9,7 +9,6 @@ const CursorComponent: FC<Props> = ({}) =>{
     const [dragState, setDragState] = useState(false);
     const [position, setPosition] = useState<Point>({x:0,y:0});
     function handlePointerMove(event){
-        console.log("cursor");
         setPosition({x:event.clientX, y:event.clientY})
     }
     function handlePointerDown(event){

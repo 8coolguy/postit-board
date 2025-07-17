@@ -1,6 +1,7 @@
 'use client'
 import React, { type FC, useEffect, useCallback, useState } from "react";
 import {type Point} from "framer-motion"
+import { CanvasProvider } from "@contexts/CanvasContext.tsx"
 
 interface Props {
   children: React.ReactNode;
@@ -73,17 +74,21 @@ const Canvas: FC <Props> = ({children}) => {
     }, [offSet])
      
     return (
-        <div
-        className="z-0"
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerMove={handlePointerMove}
-        onWheel={handleWheel}
+        <CanvasProvider
+            center={center}
         >
-            {children}
-            <Dots position={center} zoom={zoom}/>
-            <Filter/>
-        </div>
+            <div
+                className="z-0"
+                onPointerDown={handlePointerDown}
+                onPointerUp={handlePointerUp}
+                onPointerMove={handlePointerMove}
+                onWheel={handleWheel}
+            >
+                {children}
+                <Dots position={center} zoom={zoom}/>
+                <Filter/>
+            </div>
+        </CanvasProvider>
     )
 
 }
