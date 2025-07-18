@@ -32,7 +32,6 @@ const CursorComponent: FC<Props> = ({}) =>{
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         >
-
         </div>
     )
 }

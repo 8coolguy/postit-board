@@ -17,9 +17,8 @@ const Filter = () => (
 );
 
 const Canvas: FC <Props> = ({children}) => {
-    const canvasHeight = 3000;
-    const canvasWidth = 3000;
-
+    const canvasHeight = 10000;
+    const canvasWidth = 10000;
     const centerY = 0;
     const centerX = 0;
     const upperLimit = 50;
@@ -76,6 +75,7 @@ const Canvas: FC <Props> = ({children}) => {
     return (
         <CanvasProvider
             center={center}
+            zoom={zoom}
         >
             <div
                 className="z-0"

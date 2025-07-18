@@ -7,10 +7,12 @@ export interface Point {
 
 export interface CanvasContextState{
     center:Point;
+    zoom:number;
 }
 
 const defaultState: CanvasContextState = {
-    center: {x:0, y:0}
+    center: {x:0, y:0},
+    zoom: 100
 };
 
 const CanvasContext = createContext<CanvasContextState>(defaultState);
@@ -27,11 +29,12 @@ interface CanvasProviderProps extends CanvasContext{
 
 export const CanvasProvider:FC<CanvasProviderProps> = ({
     children,
-    center
+    center,
+    zoom
 }) =>{
     const contextValue = useMemo(() => {
-        return {center}
-    }, [center]);
+        return {center, zoom}
+    }, [center, zoom]);
     return (
         <CanvasContext.Provider value={contextValue}>
             {children}
