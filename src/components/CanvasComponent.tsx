@@ -36,8 +36,9 @@ const Canvas: FC <Props> = ({children}) => {
     //handle pointer down, pointer move, pointer up, wheel scroll events
 
     function handlePointerDown(event: PointerEvent){
+        const pixelSize = Math.round(.16 * zoom + 58);
         setDragState(true);
-        setOffset({x:event.clientX,y:event.clientY});
+        setOffset({x:event.clientX*pixelSize/1000,y:event.clientY*pixelSize/1000});
     }
 
     function handlePointerUp(event: PointerEvent){
@@ -46,7 +47,8 @@ const Canvas: FC <Props> = ({children}) => {
     }
     function handlePointerMove(event: PointerEvent){
         if(dragState){
-            const delta = {x:offSet.x - event.clientX, y: offSet.y - event.clientY};
+            const pixelSize = Math.round(.16 * zoom + 58);
+            const delta = {x:offSet.x - event.clientX*pixelSize/1000, y: offSet.y - event.clientY*pixelSize/1000};
             //handle case where center moves off the can
             if(canvasWidth < Math.abs(center.x + delta.x) || canvasHeight < Math.abs(center.y + delta.y))
                 return;
@@ -69,7 +71,7 @@ const Canvas: FC <Props> = ({children}) => {
     }, [dragState])
 
     useEffect(() => {
-        console.log("Offset", offSet);
+        console.log(offSet);
     }, [offSet])
      
     return (

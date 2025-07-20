@@ -14,7 +14,7 @@ const DraggableComponent: FC<Props> = ({children}) =>{
     function handlePointerDown(event){
         event.stopPropagation();
         setDragState(true);
-        if (Math.sqrt(Math.sqrt(Math.pow(center.x-position.x,2) + Math.pow(center.y-position.y,2))) > 24){
+        if (position.x < center.x + position && position.x > center.x - position.x && position.y < center.y + zoom && position.y > center.y - zoom){
             setVisibility("hidden");
         }else{
             setVisibility("");
@@ -35,18 +35,17 @@ const DraggableComponent: FC<Props> = ({children}) =>{
         }
     }
 
-    
-
     useEffect(() => {
-        if (Math.sqrt(Math.sqrt(Math.pow(center.x-position.x,2) + Math.pow(center.y-position.y,2))) > 24){
+        if (position.x < center.x + position && position.x > center.x - position.x && position.y < center.y + zoom && position.y > center.y - zoom){
             setVisibility("hidden");
         }else{
             setVisibility("");
         }
-        console.log("position",position);
-        console.log("center",center);
-        console.log(visibilityStatus);
     }, [center])
+    useEffect(() => {
+        console.log("Status",visibilityStatus);
+    }, [visibilityStatus])
+
     if (width === undefined|| height === undefined) { 
         return <div style={{ visibility: 'hidden' }}>Loading responsive content...</div>;
     }
