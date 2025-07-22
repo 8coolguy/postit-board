@@ -64,6 +64,25 @@ const Canvas: FC <Props> = ({children}) => {
         }
     }
 
+    function handleKeyBoardEvent(event){
+        const delta = {x:0, y:0};
+        if(event.code == "ArrowDown"){
+            delta.y = 10
+        }
+        else if(event.code == "ArrowUp"){
+            delta.y = -10
+        }
+        else if(event.code == "ArrowRight"){
+            delta.x = 10
+        }
+        else if(event.code == "ArrowLeft"){
+            delta.x = -10
+        }
+        if(canvasWidth < Math.abs(center.x + delta.x) || canvasHeight < Math.abs(center.y + delta.y))
+            return;
+        setCenter({x:center.x + delta.x, y:center.y + delta.y});
+    }
+
     useEffect(() => {
     }, [center])
 
@@ -71,8 +90,15 @@ const Canvas: FC <Props> = ({children}) => {
     }, [dragState])
 
     useEffect(() => {
-        console.log(offSet);
     }, [offSet])
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyBoardEvent);
+      return () => {
+        document.removeEventListener('keydown', handleKeyBoardEvent);
+      }
+    }, [center])
+    
      
     return (
         <CanvasProvider
