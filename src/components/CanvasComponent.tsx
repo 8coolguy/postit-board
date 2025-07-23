@@ -31,9 +31,6 @@ const Canvas: FC <Props> = ({children}) => {
     const [zoom, setZoom] = useState(100);
     const wheelSens = .05;
     const [dragState, setDragState] = useState(false);
-    //TODO:
-    //pointer events that I have to handle
-    //handle pointer down, pointer move, pointer up, wheel scroll events
 
     function handlePointerDown(event: PointerEvent){
         const pixelSize = Math.round(.16 * zoom + 58);
@@ -43,8 +40,8 @@ const Canvas: FC <Props> = ({children}) => {
 
     function handlePointerUp(event: PointerEvent){
         setDragState(false);
-        console.log("center",center);
     }
+
     function handlePointerMove(event: PointerEvent){
         if(dragState){
             const pixelSize = Math.round(.16 * zoom + 58);
@@ -55,6 +52,7 @@ const Canvas: FC <Props> = ({children}) => {
             setCenter({x:center.x + delta.x, y:center.y + delta.y});
         }
     }
+
     function handleWheel(event:MouseEvent){
         if(event.deltaY > 0){
             setZoom(Math.max(zoom - event.deltaY*wheelSens, upperLimit));
@@ -90,6 +88,7 @@ const Canvas: FC <Props> = ({children}) => {
     }, [dragState])
 
     useEffect(() => {
+        console.log(offSet);
     }, [offSet])
 
     useEffect(() => {

@@ -1,10 +1,7 @@
 'use client'
 import React, { type FC, useEffect, useCallback, useState } from "react";
 import { type Point } from "framer-motion";
-//TODO: make sure the changes to the cursor are done here
-//create posts on right click
-//update look of the cursor
-//store position of the cursor
+
 const CursorComponent: FC<Props> = ({}) =>{
     const [dragState, setDragState] = useState(false);
     const [position, setPosition] = useState<Point>({x:0,y:0});
