@@ -43,6 +43,7 @@ const DraggableComponent: FC<Props> = ({children}) =>{
             setVisibility("");
         }
     }, [center])
+
     useEffect(() => {
         console.log("Status",visibilityStatus);
     }, [visibilityStatus])
@@ -50,6 +51,7 @@ const DraggableComponent: FC<Props> = ({children}) =>{
     if (width === undefined|| height === undefined) { 
         return <div style={{ visibility: 'hidden' }}>Loading responsive content...</div>;
     }
+
     return (
         <div 
         onPointerDown={handlePointerDown}

@@ -88,13 +88,12 @@ const Canvas: FC <Props> = ({children}) => {
     }, [dragState])
 
     useEffect(() => {
-        console.log(offSet);
     }, [offSet])
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyBoardEvent);
       return () => {
-        document.removeEventListener('keydown', handleKeyBoardEvent);
+        document.removeEventListener("keydown", handleKeyBoardEvent);
       }
     }, [center])
     
