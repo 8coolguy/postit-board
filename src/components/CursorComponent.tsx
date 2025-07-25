@@ -1,37 +1,32 @@
 'use client'
 import React, { type FC, useEffect, useCallback, useState } from "react";
-import { type Point } from "framer-motion";
-const CursorStateType = {
-    DRAG:0,
-    POINT:1,
-    EDGE:2,
-    DISABLE:3,
-    MOVE:4
-}
+import { type Point } from "@lib/CanvasTypes.tsx";
+import { CursorStateType } from "@lib/CursorTypes.tsx";
 const CursorComponent: FC<Props> = ({}) =>{
-    const [dragState, setDragState] = useState<CursorStateType>(1);
+    const [dragState, setDragState] = useState<number>(CursorStateType.POINT);
     const [position, setPosition] = useState<Point>({x:0,y:0});
     function handlePointerMove(event){
-        //setPosition({x:event.clientX, y:event.clientY})
+        setPosition({x:event.clientX, y:event.clientY})
     }
     function handlePointerDown(event){
-        setDragState(0);
+        console.log("Hello");
+        setDragState(CursorStateType.DRAG);
         //check if it is on the side of a component
     }
     function handlePointerUp(event){
-        setDragState(1);
+        setDragState(CursorStateType.POINT);
     }
     useEffect(() => {
-        if(dragState == 0){
-            document.body.style.cursor = "move";
-        }else if(dragState == 1){
+        if(dragState == CursorStateType.DRAG){
+            document.body.style.cursor = "grabbing";
+        }else if(dragState == CursorStateType.POINT){
             document.body.style.cursor = "default";
-        }else if (dragState == 2){
+        }else if (dragState == CursorStateType.EDGE){
             document.body.style.cursor ="se-resize";
-        }else if (dragState == 3){
+        }else if (dragState == CursorStateType.DISABLE){
             document.body.style.cursor ="not-allowed";
-        }else if(dragState == 4){
-            document.body.style.cursor ="grabbing";
+        }else if(dragState == CursorStateType.MOVE){
+            document.body.style.cursor ="move";
         }
     }, [dragState])
 

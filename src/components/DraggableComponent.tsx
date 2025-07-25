@@ -1,6 +1,6 @@
 'use client';
 import { useState, type FC, useEffect} from "react";
-import {type Point} from "framer-motion";
+import {type Point} from "@lib/CanvasTypes.tsx";
 import { useCanvasContext } from "@contexts/CanvasContext";
 import useWindowSize from "@hooks/useWindowSize";
 

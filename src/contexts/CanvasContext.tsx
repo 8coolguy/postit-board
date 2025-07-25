@@ -1,14 +1,5 @@
 import { createContext, useContext, type ReactNode, type FC, useMemo } from "react";
-
-export interface Point {
-    x:number;
-    y:number;
-}
-
-export interface CanvasContextState{
-    center:Point;
-    zoom:number;
-}
+import {type Point, type CanvasContextState} from "@lib/CanvasTypes.tsx";
 
 const defaultState: CanvasContextState = {
     center: {x:0, y:0},

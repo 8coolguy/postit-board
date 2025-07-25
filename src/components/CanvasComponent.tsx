@@ -1,7 +1,7 @@
 'use client'
 import React, { type FC, useEffect, useCallback, useState } from "react";
-import {type Point} from "framer-motion"
-import { CanvasProvider } from "@contexts/CanvasContext.tsx"
+import {type Point} from "@lib/CanvasTypes.tsx";
+import { CanvasProvider } from "@contexts/CanvasContext.tsx";
 
 interface Props {
   children: React.ReactNode;
@@ -24,6 +24,7 @@ const Canvas: FC <Props> = ({children}) => {
     const upperLimit = 50;
     const lowerLimit = 300;
     const [center, setCenter] = useState<Point>({x:centerX,y:centerY});
+    const [cursorState, setCursorState] = useState<CursorStateType>({x:centerX,y:centerY});
     const [offSet,setOffset] = useState<Point>({
         x:0,
         y:0,
@@ -97,7 +98,6 @@ const Canvas: FC <Props> = ({children}) => {
       }
     }, [center])
     
-     
     return (
         <CanvasProvider
             center={center}
