@@ -9,9 +9,7 @@ const CursorComponent: FC<Props> = ({}) =>{
         setPosition({x:event.clientX, y:event.clientY})
     }
     function handlePointerDown(event){
-        console.log("Hello");
         setDragState(CursorStateType.DRAG);
-        //check if it is on the side of a component
     }
     function handlePointerUp(event){
         setDragState(CursorStateType.POINT);

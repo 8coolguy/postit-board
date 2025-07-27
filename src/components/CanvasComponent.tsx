@@ -8,8 +8,9 @@ interface Props {
 }
 const Dots = ({position,zoom}:{position:Point,zoom:number}) => {
     const pixelSize = Math.round(-.16 * zoom + 58);
+    const pixelMove = 1;
     return (
-        <div style={{backgroundSize: `${pixelSize}px ${pixelSize}px`, backgroundPosition: `${-position.x*.07}px ${-position.y*.07}px`}} className={`absolute inset-0 h-full w-full bg-[radial-gradient(#776780_1.5px,transparent_1px)] opacity-100 [background-size:$${pixelSize}px_${pixelSize}px]`}></div>
+        <div style={{backgroundSize: `${pixelSize}px ${pixelSize}px`, backgroundPosition: `${-position.x*pixelMove}px ${-position.y*pixelMove}px`}} className={`absolute inset-0 h-full w-full bg-[radial-gradient(#776780_1.5px,transparent_1px)] opacity-100 [background-size:$${pixelSize}px_${pixelSize}px]`}></div>
     );
 }
 const Filter = () => (
@@ -17,26 +18,27 @@ const Filter = () => (
 );
 
 const Canvas: FC <Props> = ({children}) => {
-    const canvasHeight = 10000;
-    const canvasWidth = 10000;
+    const canvasHeight = 1000;
+    const canvasWidth = 1000;
     const centerY = 0;
     const centerX = 0;
     const upperLimit = 50;
     const lowerLimit = 300;
     const [center, setCenter] = useState<Point>({x:centerX,y:centerY});
-    const [cursorState, setCursorState] = useState<CursorStateType>({x:centerX,y:centerY});
+    //const [cursorState, setCursorState] = useState<>({x:centerX,y:centerY});
     const [offSet,setOffset] = useState<Point>({
         x:0,
         y:0,
     }); 
     const [zoom, setZoom] = useState(100);
     const wheelSens = .05;
+    const moveMultiplier = .01;
     const [dragState, setDragState] = useState(false);
 
     function handlePointerDown(event: PointerEvent){
         const pixelSize = Math.round(.16 * zoom + 58);
         setDragState(true);
-        setOffset({x:event.clientX*pixelSize/1000,y:event.clientY*pixelSize/1000});
+        setOffset({x:event.clientX*pixelSize*moveMultiplier,y:event.clientY*pixelSize*moveMultiplier});
     }
 
     function handlePointerUp(event: PointerEvent){
@@ -46,11 +48,12 @@ const Canvas: FC <Props> = ({children}) => {
     function handlePointerMove(event: PointerEvent){
         if(dragState){
             const pixelSize = Math.round(.16 * zoom + 58);
-            const delta = {x:offSet.x - event.clientX*pixelSize/1000, y: offSet.y - event.clientY*pixelSize/1000};
+            const delta = {x:offSet.x - event.clientX*pixelSize*moveMultiplier, y: offSet.y - event.clientY*pixelSize*moveMultiplier};
             //handle case where center moves off the can
             if(canvasWidth < Math.abs(center.x + delta.x) || canvasHeight < Math.abs(center.y + delta.y))
                 return;
             setCenter({x:center.x + delta.x, y:center.y + delta.y});
+            setOffset({x:event.clientX*pixelSize*moveMultiplier,y:event.clientY*pixelSize*moveMultiplier});
         }
     }
 
@@ -83,6 +86,7 @@ const Canvas: FC <Props> = ({children}) => {
     }
 
     useEffect(() => {
+        //console.log(center);
     }, [center])
 
     useEffect(() => {

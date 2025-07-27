@@ -10,6 +10,7 @@ const DraggableComponent: FC<Props> = ({children}) =>{
     const [position, setPosition] = useState<Point>({x:0,y:0});
     const { center, zoom } = useCanvasContext();
     const { width, height } = useWindowSize();
+    // const [size, setSize] = useState<Point>({x:300,y:300});
     const size = -.4 * zoom + 220;
 
     function handlePointerDown(event){
@@ -58,7 +59,7 @@ const DraggableComponent: FC<Props> = ({children}) =>{
         onPointerUp={handlePointerUp}
         onPointerMove={handlePointerMove}
         style={{height:`${size}px`, width:`${size}px`, top:`${position.y - center.y + height/2}px`, left:`${position.x - center.x + width/2}px`, transform: "translate(-50%, -50%)"}}
-        className={`absolute z-1 truncate ${visibilityStatus}`}>
+        className={`absolute z-1 truncate ${visibilityStatus} border`}>
             {children}
         </div>
     )
