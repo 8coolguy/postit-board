@@ -2,6 +2,8 @@
 import React, { type FC, useEffect, useCallback, useState } from "react";
 import {type Point} from "@lib/CanvasTypes.tsx";
 import { CanvasProvider } from "@contexts/CanvasContext.tsx";
+import CursorComponent from "@components/CursorComponent.tsx";
+import { CursorStateType } from "@lib/CursorTypes.tsx";
 
 interface Props {
   children: React.ReactNode;
@@ -24,6 +26,8 @@ const Canvas: FC <Props> = ({children}) => {
     const centerX = 0;
     const upperLimit = 50;
     const lowerLimit = 300;
+    const wheelSens = .05;
+    const moveMultiplier = .01;
     const [center, setCenter] = useState<Point>({x:centerX,y:centerY});
     //const [cursorState, setCursorState] = useState<>({x:centerX,y:centerY});
     const [offSet,setOffset] = useState<Point>({
@@ -31,18 +35,19 @@ const Canvas: FC <Props> = ({children}) => {
         y:0,
     }); 
     const [zoom, setZoom] = useState(100);
-    const wheelSens = .05;
-    const moveMultiplier = .01;
     const [dragState, setDragState] = useState(false);
+    const [cursorState, setCursor] = useState<number>(CursorStateType.POINT);
 
     function handlePointerDown(event: PointerEvent){
         const pixelSize = Math.round(.16 * zoom + 58);
         setDragState(true);
         setOffset({x:event.clientX*pixelSize*moveMultiplier,y:event.clientY*pixelSize*moveMultiplier});
+        setCursor(CursorStateType.DRAG);
     }
 
     function handlePointerUp(event: PointerEvent){
         setDragState(false);
+        setCursor(CursorStateType.POINT);
     }
 
     function handlePointerMove(event: PointerEvent){
@@ -86,7 +91,6 @@ const Canvas: FC <Props> = ({children}) => {
     }
 
     useEffect(() => {
-        //console.log(center);
     }, [center])
 
     useEffect(() => {
@@ -101,11 +105,36 @@ const Canvas: FC <Props> = ({children}) => {
         document.removeEventListener("keydown", handleKeyBoardEvent);
       }
     }, [center])
+
+    useEffect(() => {
+        if(cursorState== CursorStateType.DRAG){
+            document.body.style.cursor = "grabbing";
+        }else if(cursorState== CursorStateType.POINT){
+            document.body.style.cursor = "default";
+        }else if (cursorState== CursorStateType.EDGERD){
+            document.body.style.cursor ="se-resize";
+        }else if (cursorState== CursorStateType.EDGERU){
+            document.body.style.cursor ="ne-resize";
+        }else if (cursorState== CursorStateType.EDGELU){
+            document.body.style.cursor ="nw-resize";
+        }else if (cursorState== CursorStateType.EDGELD){
+            document.body.style.cursor ="sw-resize";
+        }else if (cursorState== CursorStateType.EDGER){
+            document.body.style.cursor ="ew-resize";
+        }else if (cursorState== CursorStateType.EDGEU){
+            document.body.style.cursor ="ns-resize";
+        }else if (cursorState== CursorStateType.DISABLE){
+            document.body.style.cursor ="not-allowed";
+        }else if(cursorState== CursorStateType.MOVE){
+            document.body.style.cursor ="move";
+        }
+    }, [cursorState])
     
     return (
         <CanvasProvider
             center={center}
             zoom={zoom}
+            setCursor={setCursor}
         >
             <div
                 className="z-0"
@@ -115,12 +144,12 @@ const Canvas: FC <Props> = ({children}) => {
                 onWheel={handleWheel}
             >
                 {children}
+                <CursorComponent cursorState={cursorState}/>
                 <Dots position={center} zoom={zoom}/>
                 <Filter/>
             </div>
         </CanvasProvider>
     )
-
 }
 
 

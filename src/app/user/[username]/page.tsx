@@ -1,7 +1,6 @@
 'use client'
 import Canvas from "@components/CanvasComponent.tsx";
 import DraggableComponent from "@components/DraggableComponent.tsx";
-import CursorComponent from "@components/CursorComponent.tsx";
 
 export default function Home({params}){
     const settings = {};
@@ -21,7 +20,6 @@ export default function Home({params}){
     return (
         <div>
             <Canvas>
-                <CursorComponent/>
                 <DraggableComponent>
                     <p> here is some text jflksjflksjdlfkjsl</p>
                     <p>flsjflsdkjfldskjflsdkfjlsdkfjlsdkfj</p>

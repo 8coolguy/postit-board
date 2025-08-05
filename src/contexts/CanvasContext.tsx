@@ -3,7 +3,8 @@ import {type Point, type CanvasContextState} from "@lib/CanvasTypes.tsx";
 
 const defaultState: CanvasContextState = {
     center: {x:0, y:0},
-    zoom: 100
+    zoom: 100,
+    setCursor:1,
 };
 
 const CanvasContext = createContext<CanvasContextState>(defaultState);
@@ -21,11 +22,12 @@ interface CanvasProviderProps extends CanvasContext{
 export const CanvasProvider:FC<CanvasProviderProps> = ({
     children,
     center,
-    zoom
+    zoom,
+    setCursor
 }) =>{
     const contextValue = useMemo(() => {
-        return {center, zoom}
-    }, [center, zoom]);
+        return {center, zoom, setCursor}
+    }, [center, zoom, setCursor]);
     return (
         <CanvasContext.Provider value={contextValue}>
             {children}
