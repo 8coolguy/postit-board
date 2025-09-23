@@ -1,9 +1,11 @@
 import { createContext, useContext, type ReactNode, type FC, useMemo } from "react";
+import { CursorStateType } from "@lib/CursorTypes";
 import {type Point, type CanvasContextState} from "@lib/CanvasTypes.tsx";
 
 const defaultState: CanvasContextState = {
     center: {x:0, y:0},
     zoom: 100,
+    cursorState:CursorStateType.POINT,
     setCursor:1,
 };
 
@@ -23,11 +25,12 @@ export const CanvasProvider:FC<CanvasProviderProps> = ({
     children,
     center,
     zoom,
+    cursorState,
     setCursor
 }) =>{
     const contextValue = useMemo(() => {
-        return {center, zoom, setCursor}
-    }, [center, zoom, setCursor]);
+        return {center, zoom, cursorState, setCursor}
+    }, [center, zoom, cursorState, setCursor]);
     return (
         <CanvasContext.Provider value={contextValue}>
             {children}

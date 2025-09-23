@@ -11,4 +11,5 @@ export const CursorStateType = {
     EDGELD:8,
     EDGER:9,
     EDGEU:10,
+    EDGEL:11,
 }

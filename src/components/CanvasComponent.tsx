@@ -119,9 +119,9 @@ const Canvas: FC <Props> = ({children}) => {
             document.body.style.cursor ="nw-resize";
         }else if (cursorState== CursorStateType.EDGELD){
             document.body.style.cursor ="sw-resize";
-        }else if (cursorState== CursorStateType.EDGER){
+        }else if (cursorState== CursorStateType.EDGER || cursorState == CursorStateType.EDGEL){
             document.body.style.cursor ="ew-resize";
-        }else if (cursorState== CursorStateType.EDGEU){
+        }else if (cursorState== CursorStateType.EDGEU || cursorState == CursorStateType.EDGED){
             document.body.style.cursor ="ns-resize";
         }else if (cursorState== CursorStateType.DISABLE){
             document.body.style.cursor ="not-allowed";
@@ -134,6 +134,7 @@ const Canvas: FC <Props> = ({children}) => {
         <CanvasProvider
             center={center}
             zoom={zoom}
+            cursorState={cursorState}
             setCursor={setCursor}
         >
             <div
