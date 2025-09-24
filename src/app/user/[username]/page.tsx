@@ -1,38 +1,58 @@
 'use client'
+import 'remixicon/fonts/remixicon.css';
+import { useState, useEffect} from "react";
 import Canvas from "@components/CanvasComponent.tsx";
 import DraggableComponent from "@components/DraggableComponent.tsx";
+import PostItComponent from "@components/DraggableComponent.tsx";
 
 export default function Home({params}){
-    const settings = {};
-    const posts = [{id:0,x:1000, y:0, title:"first post",type:"image", title:"",content:"Hello this is the the content of this posit note",author:"arnav", size:10},];
+    const [settings, setSettings] = useState({});
+    const posts = [{id:0,x:900, y:0,sizeX:100,sizeY:100, title:"first post",type:"image",content:"https://picsum.photos/id/237/200/300",author:"arnav",},];
 
     const elements = posts.map(element => 
-            (<div key={element.id} className={`fixed border-white top-[${element.y}px] left-[${element.x}px]`}>
-                <p className="text-bold">{element.title}</p>
-                <p className="text-bold">{element.content}</p>
-            </div>)
+            (<DraggableComponent key={element.id} startingPosition={{x:element.x,y:element.y}} startingSize={{x:element.sizeX,y:element.sizeY}}>
+                <PostItComponent className={`fixed border-white top-[${element.y}px] left-[${element.x}px]`}>
+                    <p className="text-bold">{element.title}</p>
+                    <p className="text-bold">{element.content}</p>
+                </PostItComponent>
+            </DraggableComponent>)
         );
     function handleClick(event){
-        console.log("Hello World")
         event.stopPropagation();
-        //add an event
+    }
+    useEffect(() => {
+        fetchSettings();
+      return () => {
+      }
+    }, [])
+    
+    async function fetchSettings(){
+        const response = await fetch("/api/settings");
+        const data = await response.json();
+        setSettings(data);
     }
     return (
         <div>
             <Canvas>
-                <DraggableComponent>
-                    <p> here is some text jflksjflksjdlfkjsl</p>
-                    <p>flsjflsdkjfldskjflsdkfjlsdkfjlsdkfj</p>
-                    <p> here is some text jflksjflksjdlfkjsl</p>
-                    <p>flsjflsdkjfldskjflsdkfjlsdkfjlsdkfj</p>
-                    <p>flsjflsdkjfldskjflsdkfjlsdkfjlsdkfj</p>
-                    <p> here is some text jflksjflksjdlfkjsl</p>
-                    <p>flsjflsdkjfldskjflsdkfjlsdkfjlsdkfj</p>
-                </DraggableComponent>
+                {elements}
             </Canvas>
             <div className="z-3 absolute top-[100px] left-[100px]">
-                <button onClick={handleClick}>Click Me</button>
+                <button onClick={handleClick}>
+                    <div className="rounded-full bg-zinc-600 hover:bg-zinc-800 opacity-70 p-4">
+                        <i className="ri-add-large-line" style={{fontSize: "36px"}}></i>
+                    </div>
+                </button>
             </div>
+
+
+            <div className="z-3 absolute bottom-[100px] right-[100px]">
+                <button onClick={handleClick}>
+                    <div className="rounded-full bg-zinc-600 hover:bg-zinc-800 opacity-70 p-4">
+                        <i className="ri-settings-3-line" style={{fontSize: "36px"}}></i>
+                    </div>
+                </button>
+            </div>
+
         </div>
     )
 } 

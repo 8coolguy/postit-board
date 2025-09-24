@@ -7,4 +7,6 @@ export interface Point {
 export interface CanvasContextState{
     center:Point;
     zoom:number;
+    cursorState:number;
+    setCursor:number;
 }

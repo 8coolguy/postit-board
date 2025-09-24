@@ -3,9 +3,10 @@ import { useState, type FC, useEffect} from "react";
 import {type Point} from "@lib/CanvasTypes.tsx";
 import { useCanvasContext } from "@contexts/CanvasContext";
 import { CursorStateType } from "@lib/CursorTypes";
+import { DraggableProvider } from "@contexts/DraggableContext.tsx";
 import useWindowSize from "@hooks/useWindowSize";
 
-const DraggableComponent: FC<Props> = ({children}) =>{
+const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize}) =>{
     const { width, height } = useWindowSize();
     const [dragState, setDragState] = useState(false);//handles all cursor down states for the component
     const moveMultiplier = .01;
@@ -13,10 +14,11 @@ const DraggableComponent: FC<Props> = ({children}) =>{
     const [visibilityStatus, setVisibility] = useState("hidden");
     //position of the componenet within in the virtual canvas
     const [position, setPosition] = useState<Point>({x:0,y:0});
+    console.log(position);
     //canvas context 
     const { center, zoom, cursorState, setCursor } = useCanvasContext();
     //size of the component
-    const [size, setSize] = useState<Point>({x:300,y:300});
+    const [size, setSize] = useState<Point>({x:0,y:0});
     //offset used to measure change in size
     const [offSet, setOffset] = useState<Point>({x:0,y:0});
     function adjustSize(size) {
@@ -93,29 +95,31 @@ const DraggableComponent: FC<Props> = ({children}) =>{
 
     useEffect(() => {
         //need to change this function to actually take into account screen size, zoom and the center
-        const eucDist = Math.sqrt(Math.pow(position.x - center.x,2) + Math.pow(position.y - center.y,2),.5);
-        if (eucDist > 600){
-            setVisibility("hidden");
-        }else{
-            setVisibility("");
-        }
+        // const eucDist = Math.sqrt(Math.pow(position.x - center.x,2) + Math.pow(position.y - center.y,2),.5);
+        // if (eucDist > 600){
+        //     setVisibility("hidden");
+        // }else{
+        //     setVisibility("");
+        // }
     }, [center])
 
     useEffect(() => {
     }, [visibilityStatus])
 
     if (width === undefined|| height === undefined) { 
-        return <div style={{ visibility: 'hidden' }}>Loading responsive content...</div>;
+        return <div style={{ visibility: 'hidden' }}>Loading responsive conent...</div>;
     }
     return (
-        <div 
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerMove={handlePointerMove}
-        style={{visibility: `${visibilityStatus}`, height:`${adjustSize(size.y)}px`, width:`${adjustSize(size.x)}px`, top:`${position.y - center.y + height/2}px`, left:`${position.x - center.x + width/2}px`, transform: "translate(-50%, -50%)"}}
-        className={`absolute z-3 truncate border`}>
-            {children}
-        </div>
+        <DraggableProvider position={position} size={size}>
+            <div
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerMove={handlePointerMove}
+            style={{visibility: `${visibilityStatus}`, height:`${adjustSize(size.y)}px`, width:`${adjustSize(size.x)}px`, top:`${position.y - center.y + height/2}px`, left:`${position.x - center.x + width/2}px`, transform: "translate(-50%, -50%)"}}
+            className={`absolute z-3 truncate border`}>
+                {children}
+            </div>
+        </DraggableProvider>
     )
 }
 

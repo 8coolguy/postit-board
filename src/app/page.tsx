@@ -1,4 +1,5 @@
 import Image from "next/image";
+import 'remixicon/fonts/remixicon.css';
 
 export default function Login() {
   return (

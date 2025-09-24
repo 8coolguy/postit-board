@@ -1,16 +1,17 @@
-export const dynamic = 'force-static';
+//export const dynamic = 'force-static';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-    return Response.json({
+export async function GET(request: Request) {
+    console.log(request);
+    return NextResponse.json({
         title:"Name",
         author:"8coolguy",
         background:{
-            type:"image|color|dots|shader|default=blank"
+            type:"image|color|dots|shader|default=blank",
             image:"link",
-            shader:"code of some sort"
+            shader:"code of some sort",
             color:""
-        }
+        },
         allowed:{
             image:true,
             shader:true,
@@ -22,8 +23,10 @@ export async function GET() {
             create:"public|private|locked",
             move:"public|private|locked",
             delete:"public|private|locked",
-            update:"public|private|locked",
             ownerlock:true,
         }
     });
+}
+export async function POST() {
+
 }
