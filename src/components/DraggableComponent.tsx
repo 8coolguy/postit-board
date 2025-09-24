@@ -1,5 +1,5 @@
 'use client';
-import { useState, type FC, useEffect} from "react";
+import { useState, type FC, useEffect, memo} from "react";
 import {type Point} from "@lib/CanvasTypes.tsx";
 import { useCanvasContext } from "@contexts/CanvasContext";
 import { CursorStateType } from "@lib/CursorTypes";
@@ -13,12 +13,11 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     
     const [visibilityStatus, setVisibility] = useState("hidden");
     //position of the componenet within in the virtual canvas
-    const [position, setPosition] = useState<Point>({x:0,y:0});
-    console.log(position);
+    const [position, setPosition] = useState<Point>({x:startingPosition.x,y:startingPosition.y});
     //canvas context 
     const { center, zoom, cursorState, setCursor } = useCanvasContext();
     //size of the component
-    const [size, setSize] = useState<Point>({x:0,y:0});
+    const [size, setSize] = useState<Point>({x:startingSize.x,y:startingSize.y});
     //offset used to measure change in size
     const [offSet, setOffset] = useState<Point>({x:0,y:0});
     function adjustSize(size) {
@@ -95,12 +94,12 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
 
     useEffect(() => {
         //need to change this function to actually take into account screen size, zoom and the center
-        // const eucDist = Math.sqrt(Math.pow(position.x - center.x,2) + Math.pow(position.y - center.y,2),.5);
-        // if (eucDist > 600){
-        //     setVisibility("hidden");
-        // }else{
-        //     setVisibility("");
-        // }
+        const eucDist = Math.sqrt(Math.pow(position.x - center.x,2) + Math.pow(position.y - center.y,2),.5);
+        if (eucDist > 600){
+            setVisibility("hidden");
+        }else{
+            setVisibility("");
+        }
     }, [center])
 
     useEffect(() => {
@@ -122,5 +121,6 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
         </DraggableProvider>
     )
 }
+const DraggableComponentMemo = memo(DraggableComponent);
 
-export default DraggableComponent;
+export default DraggableComponentMemo;

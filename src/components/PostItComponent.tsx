@@ -7,7 +7,7 @@ import { useDraggableContext } from "@contexts/DraggableContext.tsx"
 
 fucntion PostItComponent(){
     const { size, position } = useDraggableContext();
-
+    console.log(position);
    return (
     <div> {size.x} {size.y}</div>
    )

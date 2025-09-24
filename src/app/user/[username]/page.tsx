@@ -2,7 +2,7 @@
 import 'remixicon/fonts/remixicon.css';
 import { useState, useEffect} from "react";
 import Canvas from "@components/CanvasComponent.tsx";
-import DraggableComponent from "@components/DraggableComponent.tsx";
+import DraggableComponentMemo from "@components/DraggableComponent.tsx";
 import PostItComponent from "@components/DraggableComponent.tsx";
 
 export default function Home({params}){
@@ -10,12 +10,12 @@ export default function Home({params}){
     const posts = [{id:0,x:900, y:0,sizeX:100,sizeY:100, title:"first post",type:"image",content:"https://picsum.photos/id/237/200/300",author:"arnav",},];
 
     const elements = posts.map(element => 
-            (<DraggableComponent key={element.id} startingPosition={{x:element.x,y:element.y}} startingSize={{x:element.sizeX,y:element.sizeY}}>
-                <PostItComponent className={`fixed border-white top-[${element.y}px] left-[${element.x}px]`}>
+            (<DraggableComponentMemo key={element.id} startingPosition={{x:element.x,y:element.y}} startingSize={{x:element.sizeX,y:element.sizeY}}>
+                <div className={`fixed border-white top-[${element.y}px] left-[${element.x}px]`}>
                     <p className="text-bold">{element.title}</p>
                     <p className="text-bold">{element.content}</p>
-                </PostItComponent>
-            </DraggableComponent>)
+                </div>
+            </DraggableComponentMemo>)
         );
     function handleClick(event){
         event.stopPropagation();
