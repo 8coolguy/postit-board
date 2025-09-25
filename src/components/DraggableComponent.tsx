@@ -1,5 +1,5 @@
 'use client';
-import { useState, type FC, useEffect, memo} from "react";
+import { useState, type FC, useEffect, memo, useMemo} from "react";
 import {type Point} from "@lib/CanvasTypes.tsx";
 import { useCanvasContext } from "@contexts/CanvasContext";
 import { CursorStateType } from "@lib/CursorTypes";
@@ -12,12 +12,8 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     const moveMultiplier = .01;
     
     const [visibilityStatus, setVisibility] = useState("hidden");
-    //position of the componenet within in the virtual canvas
-    const [position, setPosition] = useState<Point>({x:startingPosition.x,y:startingPosition.y});
     //canvas context 
     const { center, zoom, cursorState, setCursor } = useCanvasContext();
-    //size of the component
-    const [size, setSize] = useState<Point>({x:startingSize.x,y:startingSize.y});
     //offset used to measure change in size
     const [offSet, setOffset] = useState<Point>({x:0,y:0});
     function adjustSize(size) {
@@ -26,6 +22,8 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     function virtualSize(size){
         return size +.4 * zoom;
     }
+    const [size, setSize] = useState<Point>({x:startingSize.x,y:startingSize.y});
+    const [position, setPosition] = useState<Point>({x:startingPosition.x,y:startingPosition.y});
 
 
     function handlePointerDown(event){

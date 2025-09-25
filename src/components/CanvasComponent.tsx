@@ -29,7 +29,6 @@ const Canvas: FC <Props> = ({children}) => {
     const wheelSens = .05;
     const moveMultiplier = .01;
     const [center, setCenter] = useState<Point>({x:centerX,y:centerY});
-    //const [cursorState, setCursorState] = useState<>({x:centerX,y:centerY});
     const [offSet,setOffset] = useState<Point>({
         x:0,
         y:0,
