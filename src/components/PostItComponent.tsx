@@ -7,6 +7,7 @@ import { useDraggableContext } from "@contexts/DraggableContext.tsx"
 import TextComponent from "@components/TextComponent.tsx"
 import ImageComponent from "@components/ImageComponent.tsx"
 import ShaderComponent from "@components/ShaderComponent.tsx"
+import VideoComponent from "@components/VideoComponent.tsx"
 
 function PostItComponent({children, type, content, font, fontSize}){
     //border of the component is handled here and all content is handled in the component itself
@@ -24,7 +25,9 @@ function PostItComponent({children, type, content, font, fontSize}){
             <ShaderComponent code={content} onError={(e)=>console.error(e)} onCompile={()=>console.log("compiled")}/>
         )
     else if(type=="youtube")
-        console.log("youtube")
+        return (
+            <VideoComponent content={content}/>
+        )
     else if(type=="drawing")
         console.log("drawing")
     //debug one
