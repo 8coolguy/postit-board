@@ -6,6 +6,7 @@ import { useEffect, memo } from "react"
 import { useDraggableContext } from "@contexts/DraggableContext.tsx"
 import TextComponent from "@components/TextComponent.tsx"
 import ImageComponent from "@components/ImageComponent.tsx"
+import ShaderComponent from "@components/ShaderComponent.tsx"
 
 function PostItComponent({children, type, content, font, fontSize}){
     //border of the component is handled here and all content is handled in the component itself
@@ -19,12 +20,13 @@ function PostItComponent({children, type, content, font, fontSize}){
             <ImageComponent content={content}/>
         )
     else if(type=="shader")
-        console.log("shader");
+        return (
+            <ShaderComponent code={content} onError={(e)=>console.error(e)} onCompile={()=>console.log("compiled")}/>
+        )
     else if(type=="youtube")
         console.log("youtube")
-    else if(type=="")
-
-
+    else if(type=="drawing")
+        console.log("drawing")
     //debug one
     return (
             <div className="">
@@ -34,6 +36,5 @@ function PostItComponent({children, type, content, font, fontSize}){
                 <p className="text-bold">{position.y}</p>
             </div>
     )
-
 }
 export default PostItComponent;
