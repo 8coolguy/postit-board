@@ -7,11 +7,11 @@ import PostItComponent from "@components/PostItComponent.tsx";
 
 export default function Home({params}){
     const [settings, setSettings] = useState({});
-    const posts = [{id:0,x:900, y:0,sizeX:100,sizeY:100, title:"first post",type:"image",content:"https://picsum.photos/id/237/200/300",author:"arnav"}];
+    const posts = [{id:0,x:900, y:0,sizeX:200,sizeY:200, title:"first post",type:"image",content:"https://picsum.photos/id/237/200/300",author:"arnav"}, {id:1,x:500, y:0,sizeX:400,sizeY:100, title:"first post",type:"text",content:"This is a postit note to tell you how cool this project is and it is so amazing you should make more like this to improve your dogshit mental",author:"arnav", font:"",fontSize:"32"}];
 
     const elements = posts.map(element => 
             (<DraggableComponentMemo key={element.id} startingSize={{x:element.sizeX,y:element.sizeY}} startingPosition={{x:element.x,y:element.y}} >
-                <PostItComponent>
+                <PostItComponent content={element.content} type={element.type} font={element.type} fontSize={element.fontSize}>
                 </PostItComponent>
             </DraggableComponentMemo>)
         );
