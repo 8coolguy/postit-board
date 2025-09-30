@@ -90,15 +90,6 @@ const Canvas: FC <Props> = ({children}) => {
     }
 
     useEffect(() => {
-    }, [center])
-
-    useEffect(() => {
-    }, [dragState])
-
-    useEffect(() => {
-    }, [offSet])
-
-    useEffect(() => {
         document.addEventListener("keydown", handleKeyBoardEvent);
       return () => {
         document.removeEventListener("keydown", handleKeyBoardEvent);
@@ -147,6 +138,11 @@ const Canvas: FC <Props> = ({children}) => {
                 <CursorComponent cursorState={cursorState}/>
                 <Dots position={center} zoom={zoom}/>
                 <Filter/>
+            </div>
+            <div className="absolute left-4 top-4 z-[1000] cursor-default select-none rounded-[10px] border-[1px] border-border bg-offwhite p-2 font-mono text-xs text-heavy shadow-[0_6px_12px_rgba(0,0,0,0.10)] md:text-sm">
+                ({Math.round(center.x)},{Math.round(center.y)})
+                <span className="text-light"> |</span> 
+                {Math.round(zoom)}x
             </div>
         </CanvasProvider>
     )
