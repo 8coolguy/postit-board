@@ -11,7 +11,7 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     const [dragState, setDragState] = useState(false);//handles all cursor down states for the component
     const moveMultiplier = .01;
     
-    const [visibilityStatus, setVisibility] = useState("hidden");
+    const [visibilityStatus, setVisibility] = useState("block");
     //canvas context 
     const { center, zoom, cursorState, setCursor } = useCanvasContext();
     //offset used to measure change in size
@@ -92,11 +92,16 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
 
     useEffect(() => {
         //need to change this function to actually take into account screen size, zoom and the center
-        const eucDist = Math.sqrt(Math.pow(position.x - center.x,2) + Math.pow(position.y - center.y,2),.5);
-        if (eucDist > 600){
-            setVisibility("hidden");
+        let deltaX = position.x - center.x + width/2 + adjustSize(size.x)/2 < 0;
+        deltaX = deltaX | position.x - center.x + width/2 - adjustSize(size.x)/2 > height;
+        let deltaY = position.y - center.y + height/2 + adjustSize(size.y)/2 < 0;
+        deltaY = deltaY | position.y - center.y + height/2 - adjustSize(size.y)/2 > width;
+        if(deltaX){
+            setVisibility("none");
+        }else if (deltaY){
+            setVisibility("none");
         }else{
-            setVisibility("");
+            setVisibility("block");
         }
     }, [center])
 
@@ -104,16 +109,16 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     }, [visibilityStatus])
 
     if (width === undefined|| height === undefined) { 
-        return <div style={{ visibility: 'hidden' }}>Loading responsive conent...</div>;
+        return <div> Loading responsive conent...</div>;
     }
     return (
         <DraggableProvider position={position} size={size}>
             <div
-            onPointerDown={handlePointerDown}
-            onPointerUp={handlePointerUp}
-            onPointerMove={handlePointerMove}
-            style={{visibility: `${visibilityStatus}`, height:`${adjustSize(size.y)}px`, width:`${adjustSize(size.x)}px`, top:`${position.y - center.y + height/2}px`, left:`${position.x - center.x + width/2}px`, transform: "translate(-50%, -50%)"}}
-            className={`absolute z-3 truncate border`}>
+                onPointerDown={handlePointerDown}
+                onPointerUp={handlePointerUp}
+                onPointerMove={handlePointerMove}
+                style={{display: `${visibilityStatus}`, height:`${adjustSize(size.y)}px`, width:`${adjustSize(size.x)}px`, top:`${position.y - center.y + height/2}px`, left:`${position.x - center.x + width/2}px`, transform: "translate(-50%, -50%)"}}
+                className={`absolute z-3 truncate border`}>
                 {children}
             </div>
         </DraggableProvider>
