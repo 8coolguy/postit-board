@@ -10,11 +10,8 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     const { width, height } = useWindowSize();
     const [dragState, setDragState] = useState(false);//handles all cursor down states for the component
     const moveMultiplier = .01;
-    
     const [visibilityStatus, setVisibility] = useState("block");
-    //canvas context 
     const { center, zoom, cursorState, setCursor } = useCanvasContext();
-    //offset used to measure change in size
     const [offSet, setOffset] = useState<Point>({x:0,y:0});
     function adjustSize(size) {
         return -.4 * zoom + size;
@@ -35,7 +32,6 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
         let right = (deltaCenter.x < adjustSize(size.x) * -.3);
         let up = (deltaCenter.y > adjustSize(size.y)*.3);
         let down = (deltaCenter.y < adjustSize(size.y) * -.3);
-
         //change the size of the component diagonally from the cursor to the other three boundraies i think
         if(left && up){
             setCursor(CursorStateType.EDGELU);
@@ -57,6 +53,11 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
             setCursor(CursorStateType.DRAG);
         }
         setDragState(true);
+        window.addEventListener("canvasPipe", canvasPipePointerMove)
+    }
+    
+    function canvasPipePointerMove(event){
+        handlePointerMove(event.detail);
     }
 
     function handlePointerUp(event){
@@ -64,6 +65,7 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
             event.stopPropagation();
             setDragState(false);
             setCursor(CursorStateType.POINT);
+            window.removeEventListener('canvasPipe', canvasPipePointerMove);
         }
     }
 
@@ -77,7 +79,7 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
         if (cursorState === CursorStateType.EDGEL || cursorState === CursorStateType.EDGELU || cursorState === CursorStateType.EDGELD) sdeltaX = sdeltaX * -1;
         if (cursorState === CursorStateType.EDGEU || cursorState === CursorStateType.EDGELU || cursorState === CursorStateType.EDGERU) sdeltaY = sdeltaY * -1;
 
-        if(cursorState != CursorStateType.POINT && cursorState != CursorStateType.DRAG && CursorStateType != CursorStateType.MOVE){
+        if(dragState && (cursorState != CursorStateType.POINT && cursorState != CursorStateType.DRAG && CursorStateType != CursorStateType.MOVE)){
             const pixelSize = Math.round(.16 * zoom + 58);
             event.stopPropagation();
             setPosition({x:position.x + pdeltaX * moveMultiplier * pixelSize, y:position.y + pdeltaY * moveMultiplier * pixelSize});
@@ -91,7 +93,6 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     }
 
     useEffect(() => {
-        //need to change this function to actually take into account screen size, zoom and the center
         let deltaX = position.x - center.x + width/2 + adjustSize(size.x)/2 < 0;
         deltaX = deltaX | position.x - center.x + width/2 - adjustSize(size.x)/2 > height;
         let deltaY = position.y - center.y + height/2 + adjustSize(size.y)/2 < 0;
@@ -104,9 +105,15 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
             setVisibility("block");
         }
     }, [center])
-
     useEffect(() => {
-    }, [visibilityStatus])
+        if(dragState){
+            window.addEventListener("canvasPipe", canvasPipePointerMove)
+        }
+        return () => {
+            window.removeEventListener('canvasPipe', canvasPipePointerMove);
+        }
+    }, [dragState])
+    
 
     if (width === undefined|| height === undefined) { 
         return <div> Loading responsive conent...</div>;

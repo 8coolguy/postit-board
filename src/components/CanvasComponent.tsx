@@ -50,7 +50,9 @@ const Canvas: FC <Props> = ({children}) => {
     }
 
     function handlePointerMove(event: PointerEvent){
-        if(dragState){
+        if(cursorState != CursorStateType.POINT && !dragState){
+            window.dispatchEvent(new CustomEvent("canvasPipe", {detail:event}));
+        }else if(dragState){
             const pixelSize = Math.round(.16 * zoom + 58);
             const delta = {x:offSet.x - event.clientX*pixelSize*moveMultiplier, y: offSet.y - event.clientY*pixelSize*moveMultiplier};
             //handle case where center moves off the can
