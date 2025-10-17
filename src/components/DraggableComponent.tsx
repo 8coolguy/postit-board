@@ -57,7 +57,10 @@ const DraggableComponent: FC<Props> = ({children, startingPosition, startingSize
     }
     
     function canvasPipePointerMove(event){
-        handlePointerMove(event.detail);
+        if(dragState){
+            console.log("cavasOffElement");
+            handlePointerMove(event.detail);
+        }
     }
 
     function handlePointerUp(event){
